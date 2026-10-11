@@ -1,6 +1,7 @@
 <odoo>
     <record id="hr_hospital_patient_demo_1" model="hr.hospital.patient">
         <field name="name">Пилип Орлик</field>
+        <field name="phone">+380000001001</field>
     </record>
 
     <record id="hr_hospital_patient_demo_2" model="hr.hospital.patient">

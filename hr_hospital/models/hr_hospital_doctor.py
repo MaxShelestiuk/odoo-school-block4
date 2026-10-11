@@ -12,6 +12,7 @@ class HrHospitalDoctor(models.Model):
         comodel_name='hospital.doctor.category',
         string='Кваліфікація',
         ondelete='restrict',
+        group_expand='_read_group_category_id',
     )
     user_id = fields.Many2one(
         comodel_name='res.users',
@@ -46,3 +47,22 @@ class HrHospitalDoctor(models.Model):
                 raise ValidationError(
                     'Ментором не може бути лікар-інтерн.'
                 )
+
+    active = fields.Boolean(default=True)
+    intern_ids = fields.One2many(
+        'hr.hospital.doctor', 'supervisor_doctor_id', string='Інтерни',
+        domain=[('is_intern', '=', True)],
+    )
+
+    @api.model
+    def _read_group_category_id(self, categories, domain):
+        return categories.search([])
+
+    def action_quick_visit(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window', 'name': self.env._('Запис до лікаря'),
+            'res_model': 'hr.hospital.patient.visit', 'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_doctor_id': self.id},
+        }

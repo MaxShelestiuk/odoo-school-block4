@@ -5,6 +5,7 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
+                        <field name="phone" widget="phone"/>
             </list>
         </field>
     </record>
@@ -14,9 +15,21 @@
         <field name="model">hr.hospital.patient</field>
         <field name="arch" type="xml">
             <form>
+                <!-- Обрано object-кнопку: метод повертає модальну форму з default_patient_id
+                     (або default_doctor_id у канбані лікаря) у context.
+                     Альтернатива — окрема XML action з context; метод зручніший для
+                     підстановки також персонального лікаря без дублювання дій. -->
+                <header><button name="action_quick_visit" type="object"
+                                string="Запис до лікаря" class="btn-primary"/></header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_visits" type="object" class="oe_stat_button" icon="fa-history">
+                            <field name="visit_count" widget="statinfo"/>
+                        </button>
+                    </div>
                     <group>
                         <field name="name"/>
+                        <field name="phone" widget="phone"/>
                         <field name="personal_doctor_id"/>
                         <field name="insurance_policy_number"/>
                     </group>
@@ -27,6 +40,12 @@
                         <field name="age"/>
                     </group>
                     <notebook>
+                        <page string="Візити" name="visits">
+                            <field name="visit_ids" readonly="1">
+                                <list><field name="visit_datetime"/><field name="doctor_id"/>
+                                    <field name="disease_id"/><field name="state"/></list>
+                            </field>
+                        </page>
                         <page string="Історія персональних лікарів">
                             <field name="doctor_history_ids" readonly="1">
                                 <list>
@@ -43,6 +62,17 @@
         </field>
     </record>
 
+    <record id="hospital_patient_view_search" model="ir.ui.view">
+        <field name="name">hospital.patient.search</field>
+        <field name="model">hr.hospital.patient</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="ПІБ або телефон"
+                       filter_domain="['|', ('name', 'ilike', self), ('phone', 'ilike', self)]"/>
+                <field name="phone"/>
+            </search>
+        </field>
+    </record>
     <record id="hr_hospital_patient_action" model="ir.actions.act_window">
         <field name="name">Patients</field>
         <field name="res_model">hr.hospital.patient</field>
