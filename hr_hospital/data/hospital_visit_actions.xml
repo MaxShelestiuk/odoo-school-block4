@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hospital_visit_cancel_overdue_action" model="ir.actions.server">
+        <field name="name">Скасувати протерміновані візити</field>
+        <field name="model_id" ref="model_hr_hospital_patient_visit"/>
+        <field name="binding_model_id" ref="model_hr_hospital_patient_visit"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = model.action_cancel_selected_overdue()</field>
+    </record>
+    <data noupdate="1">
+        <record id="hospital_visit_cancel_overdue_cron" model="ir.cron">
+            <field name="name">Hospital: скасування протермінованих візитів</field>
+            <field name="model_id" ref="model_hr_hospital_patient_visit"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_cancel_overdue_visits()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+        </record>
+    </data>
+</odoo>

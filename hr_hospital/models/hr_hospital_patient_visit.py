@@ -104,3 +104,27 @@ class HrHospitalPatientVisit(models.Model):
             raise UserError(
                 'Не можна видаляти завершений візит.'
             )
+
+    @api.model
+    def _cancel_overdue_visits(self, selected_ids=None):
+        domain = [
+            ('state', '=', 'planned'),
+            ('visit_datetime', '<', fields.Datetime.now()),
+        ]
+        if selected_ids is not None:
+            domain.append(('id', 'in', selected_ids))
+        visits = self.search(domain)
+        visits.write({'state': 'cancelled'})
+        return len(visits)
+
+    @api.model
+    def action_cancel_selected_overdue(self):
+        # Empty selection must never become a global cancellation.
+        if self.env.context.get('active_model') != self._name:
+            return False
+        self._cancel_overdue_visits(self.env.context.get('active_ids') or [])
+        return {'type': 'ir.actions.client', 'tag': 'reload'}
+
+    @api.model
+    def _cron_cancel_overdue_visits(self):
+        return self._cancel_overdue_visits()

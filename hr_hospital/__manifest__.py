@@ -10,6 +10,7 @@
     "data": [
         "security/ir.model.access.csv",
         "data/hr_hospital_disease_data.xml",
+        "data/hospital_visit_actions.xml",
         "data/hospital_doctor_category_data.xml",
         "views/hr_hospital_doctor_views.xml",
         "views/hr_hospital_patient_views.xml",
