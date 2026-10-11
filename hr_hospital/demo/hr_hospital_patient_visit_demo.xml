@@ -57,4 +57,52 @@
         <field name="visit_datetime">2026-09-16 12:00:00</field>
         <field name="state">cancelled</field>
     </record>
+    <record id="patient_visit_demo_7" model="hr.hospital.patient.visit">
+        <field name="name">Демо-візит блоку 4 — 7</field>
+        <field name="patient_id" ref="hr_hospital_patient_demo_2"/>
+        <field name="doctor_id" ref="hr_hospital_doctor_demo_1"/>
+        <field name="visit_datetime" eval="time.strftime('%Y-01-15 14:00:00')"/>
+        <field name="disease_id" ref="disease_demo_flu"/>
+        <field name="state">done</field>
+    </record>
+    <record id="patient_visit_demo_8" model="hr.hospital.patient.visit">
+        <field name="name">Демо-візит блоку 4 — 8</field>
+        <field name="patient_id" ref="hr_hospital_patient_demo_3"/>
+        <field name="doctor_id" ref="hr_hospital_doctor_demo_3"/>
+        <field name="visit_datetime" eval="time.strftime('%Y-01-15 14:00:00')"/>
+        <field name="disease_id" ref="disease_demo_scarlet_fever"/>
+        <field name="state">cancelled</field>
+    </record>
+    <record id="patient_visit_demo_9" model="hr.hospital.patient.visit">
+        <field name="name">Демо-візит блоку 4 — 9</field>
+        <field name="patient_id" ref="hr_hospital_patient_demo_1"/>
+        <field name="doctor_id" ref="hr_hospital_doctor_demo_1"/>
+        <field name="visit_datetime" eval="time.strftime('%Y-04-15 14:00:00')"/>
+        <field name="disease_id" ref="disease_demo_flu"/>
+        <field name="state">done</field>
+    </record>
+    <record id="patient_visit_demo_10" model="hr.hospital.patient.visit">
+        <field name="name">Демо-візит блоку 4 — 10</field>
+        <field name="patient_id" ref="hr_hospital_patient_demo_2"/>
+        <field name="doctor_id" ref="hr_hospital_doctor_demo_3"/>
+        <field name="visit_datetime" eval="time.strftime('%Y-04-15 14:00:00')"/>
+        <field name="disease_id" ref="disease_demo_scarlet_fever"/>
+        <field name="state">cancelled</field>
+    </record>
+    <record id="patient_visit_demo_11" model="hr.hospital.patient.visit">
+        <field name="name">Демо-візит блоку 4 — 11</field>
+        <field name="patient_id" ref="hr_hospital_patient_demo_3"/>
+        <field name="doctor_id" ref="hr_hospital_doctor_demo_1"/>
+        <field name="visit_datetime" eval="time.strftime('%Y-10-15 14:00:00')"/>
+        <field name="disease_id" ref="disease_demo_flu"/>
+        <field name="state">planned</field>
+    </record>
+    <record id="patient_visit_demo_12" model="hr.hospital.patient.visit">
+        <field name="name">Демо-візит блоку 4 — 12</field>
+        <field name="patient_id" ref="hr_hospital_patient_demo_1"/>
+        <field name="doctor_id" ref="hr_hospital_doctor_demo_3"/>
+        <field name="visit_datetime" eval="time.strftime('%Y-10-15 14:00:00')"/>
+        <field name="disease_id" ref="disease_demo_scarlet_fever"/>
+        <field name="state">planned</field>
+    </record>
 </odoo>

@@ -5,8 +5,8 @@
     'website': 'https://odoo.school/',
     'category': 'Customizations',
     'license': 'LGPL-3',
-    'version': '19.0.2.0.0',
-    "depends": ["base"],
+    'version': '19.0.4.0.0',
+    "depends": ["base", "mail"],
     "data": [
         "security/ir.model.access.csv",
         "data/hr_hospital_disease_data.xml",

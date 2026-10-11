@@ -5,8 +5,9 @@ from odoo.exceptions import UserError
 class HrHospitalPatientVisit(models.Model):
     _name = 'hr.hospital.patient.visit'
     _description = 'Patient Visit'
+    _inherit = ['mail.thread']
 
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, default='Новий візит')
     active = fields.Boolean(default=True)
     state = fields.Selection(
         selection=[
@@ -17,6 +18,7 @@ class HrHospitalPatientVisit(models.Model):
         string='Статус',
         required=True,
         default='planned',
+        tracking=True,
     )
     patient_id = fields.Many2one(
         comodel_name='hr.hospital.patient',
@@ -25,6 +27,7 @@ class HrHospitalPatientVisit(models.Model):
     doctor_id = fields.Many2one(
         comodel_name='hr.hospital.doctor',
         string='Лікар',
+        tracking=True,
     )
     visit_datetime = fields.Datetime(
         string='Запланована дата та час',
@@ -38,6 +41,35 @@ class HrHospitalPatientVisit(models.Model):
         string='Хвороба',
         ondelete='restrict',
     )
+
+    same_disease_visit_count = fields.Integer(
+        string='Візити з цією хворобою', compute='_compute_same_disease_visit_count',
+    )
+
+    @api.depends('disease_id')
+    def _compute_same_disease_visit_count(self):
+        counts = dict(self.with_context(active_test=False)._read_group(
+            [('disease_id', 'in', self.disease_id.ids)],
+            ['disease_id'], ['__count'],
+        ))
+        for visit in self:
+            visit.same_disease_visit_count = counts.get(visit.disease_id, 0)
+
+    @api.depends('patient_id.name', 'name')
+    def _compute_display_name(self):
+        for visit in self:
+            visit.display_name = visit.patient_id.name or visit.name or ''
+
+    def action_same_disease_visits(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': self.env._('Візити з цією хворобою'),
+            'res_model': self._name, 'view_mode': 'list,form',
+            'domain': [('disease_id', '=', self.disease_id.id)]
+            if self.disease_id else [('id', '=', False)],
+            'context': {'active_test': False},
+        }
 
     def write(self, vals):
         completed_visits = self.filtered(lambda visit: visit.state == 'done')
