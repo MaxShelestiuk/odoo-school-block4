@@ -26,7 +26,10 @@ class HrHospitalPatient(models.Model):
     visit_ids = fields.One2many(
         'hr.hospital.patient.visit', 'patient_id', string='Візити',
     )
-    visit_count = fields.Integer(compute='_compute_visit_count', string='Візити')
+    visit_count = fields.Integer(
+        compute='_compute_visit_count',
+        string='Кількість візитів',
+    )
 
     @api.depends('visit_ids')
     def _compute_visit_count(self):
